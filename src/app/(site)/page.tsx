@@ -1,9 +1,12 @@
+import Hero from "@/components/shared/Hero";
 import Image from "next/image";
+import { blogData } from "@/constants/blogData";
 
 export default function Home() {
+  const posts = blogData;
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h2>HEllo Travel</h2>
+    <main className="">
+      <Hero posts={posts} />
     </main>
   );
 }
