@@ -23,7 +23,7 @@ const Hero: React.FC<{ posts: (typeof post)[] }> = ({ posts }) => {
           >
             <Tag text={post.tags.toString()} />
 
-            <h2 className="text-5xl font-extrabold uppercase text-tertiary">
+            <h2 className="text-5xl max-sm:text-3xl font-extrabold uppercase text-tertiary">
               {post.title}
             </h2>
             <div className="flex items-center gap-3 font-light text-tertiary justify-center">
@@ -40,14 +40,14 @@ const Hero: React.FC<{ posts: (typeof post)[] }> = ({ posts }) => {
               <span className=" italic">{formatDate(post.publishDate)}</span>
             </div>
             <Link href={{ pathname: `/blog/${post.id}`, query: { ...post } }}>
-              <div className="relative max-h-[600px] h-auto w-auto  overflow-hidden shadow-xl">
+              <div className="relative max-h-[400px] w-full  overflow-hidden shadow-xl">
                 {post.image_path && (
                   <Image
                     width={100}
                     height={100}
                     src={post.image_path}
                     alt={`image for ${post.title}`}
-                    className="object-cover w-full h-72"
+                    className="object-cover  w-full h-fit  max-sm:h-64"
                   />
                 )}
                 <Overlay />
