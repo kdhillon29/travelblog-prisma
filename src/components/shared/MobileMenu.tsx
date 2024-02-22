@@ -12,20 +12,17 @@ import { navLinks } from "@/constants";
 import Link from "next/link";
 import Route from "../ui/Route";
 import useMenuActive from "@/hooks/useMenuActive";
-// import { User } from "@prisma/client";
-// import { signOut } from "next-auth/react";
-const User = {
-  name: "kanwar",
-  email: "kan@gmail.com",
-};
+import { User } from "@prisma/client";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface MobileMenuProps {
-  user: typeof User | null;
+  user: User;
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ user }) => {
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
-
+  const router = useRouter();
   const mobileMenuHandler = () => {
     setOpenMobileMenu(!openMobileMenu);
   };
@@ -80,20 +77,26 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ user }) => {
               <div className="flex gap-5 flex-1 flex-col py-5">
                 <Button
                   text="Log In"
-                  onClick={() => null}
+                  onClick={() => {
+                    setOpenMobileMenu(false);
+                    router.push("/access");
+                  }}
                   aria="Log in button"
                 />
                 <Button
                   text="Sign Up"
-                  onClick={() => null}
+                  onClick={() => {
+                    setOpenMobileMenu(false);
+                    router.push("/access");
+                  }}
                   aria="Sign up button"
                 />
               </div>
             )}
 
             {user && (
-              <div>
-                <ul className="flex flex-col  gap-5 items-center">
+              <div className=" bg-slate-200">
+                <ul className="flex flex-col  gap-6 items-center">
                   <Link href="/create" onClick={() => setOpenMobileMenu(false)}>
                     <li>Create a Post</li>
                   </Link>
@@ -105,10 +108,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ user }) => {
                   </Link>
 
                   <li
-                    onClick={
-                      () => {}
-                      // () => signOut()
-                    }
+                    onClick={() => {
+                      setOpenMobileMenu(false);
+                      router.push("/access");
+                    }}
                   >
                     Sign Out
                   </li>

@@ -3,22 +3,17 @@ import Link from "next/link";
 import Button from "../ui/Button";
 import Route from "../ui/Route";
 import { navLinks } from "@/constants";
-// import MobileMenu from "./MobileMenu";
-// import useMenuActive from "@/hooks/useMenuActive";
+import MobileMenu from "./MobileMenu";
+import useMenuActive from "@/hooks/useMenuActive";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
-// import { User } from "@prisma/client";
+import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
-// import { signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
-import MobileMenu from "./MobileMenu";
 
-const User = {
-  name: "kanwar",
-  email: "kan@gmail.com",
-};
 interface NavbarProps {
-  user: typeof User | null;
+  user: User;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ user }) => {
@@ -67,6 +62,8 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
 
         <ul className="flex items-center justify-center gap-16 flex-2 max-md:hidden">
           {navLinks.map((link, index) => {
+            // const isActive = useMenuActive(link.route);
+
             return (
               <li key={index}>
                 <Route route={link.route} label={link.label} />
@@ -92,29 +89,36 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
 
         {user && (
           <div className="flex gap-5 items-center flex-1 justify-end max-md:hidden">
-            <h1>{user.name}</h1>
-            {/* <Image
+            <h1>{user.name?.split(" ")[0]}</h1>
+            <Image
               src={user.image as string}
-              width={50}
-              height={50}
+              width={30}
+              height={30}
               className="rounded-full border-4 border-primary cursor-pointer"
               alt={`Image of ${user.name}`}
               onClick={() => setOpenUserMenu(!openUserMenu)}
-            /> */}
+            />
           </div>
         )}
 
         {openUserMenu && (
-          <ul className="z-10 absolute right-12 top-[70px] w-48 bg-white shadow-md rounded-md p-4">
+          <ul className="z-10 absolute right-8  top-[50px] w-48 bg-light flex flex-col text-center gap-2 shadow-md rounded-md p-2">
+            <span
+              onClick={() => setOpenUserMenu(false)}
+              className="ml-auto px-1 cursor-pointer bg-white rounded-full"
+            >
+              X
+            </span>
             <Link href="/create" onClick={() => setOpenUserMenu(false)}>
-              <li>Create a post</li>
+              <li className="">Create a post</li>
             </Link>
             <Link href="/userposts" onClick={() => setOpenUserMenu(false)}>
               <li>My Post</li>
             </Link>
-            {/* <li className="cursor-pointer" onClick={() => {signOut()} }> */}
-            Sign out
-            {/* </li> */}
+
+            <li className="cursor-pointer" onClick={() => signOut()}>
+              Sign out
+            </li>
           </ul>
         )}
 
