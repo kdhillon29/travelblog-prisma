@@ -5,6 +5,8 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import AuthContext from "@/context/AuthContext";
 import { getCurrentUser } from "@/actions/getCurrentUser";
+import { EdgeStoreProvider } from "@/lib/edgestore";
+import { User } from "@prisma/client";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -24,15 +26,22 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getCurrentUser();
+  let user = await getCurrentUser();
+  if (!user) {
+    user = null;
+  }
+  console.log("user is ", user);
   return (
     <html lang="en">
       <AuthContext>
-        <body className={`${roboto.className} overflow-x-hidden bg-light`}>
-          <Navbar user={user as any} />
-          {children}
-          <Footer />
-        </body>
+        <EdgeStoreProvider>
+          <body className={`${roboto.className}   bg-light`}>
+            <Navbar user={user} />
+            <main className="min-h-[30%] h-1/2  ">{children}</main>
+
+            <Footer />
+          </body>
+        </EdgeStoreProvider>
       </AuthContext>
     </html>
   );

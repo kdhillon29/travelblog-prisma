@@ -5,9 +5,11 @@ interface inputProps {
   type: string;
   placeholder?: string;
   value?: string | number | readonly string[] | undefined;
+  formRef?: string | {} | any;
 }
 
-const Input = ({ name, type, placeholder, value }: inputProps) => {
+const Input = ({ name, type, placeholder, value, formRef }: inputProps) => {
+  console.log("props are", { formRef });
   return (
     <>
       <input
@@ -16,6 +18,7 @@ const Input = ({ name, type, placeholder, value }: inputProps) => {
         type={type}
         value={value}
         placeholder={placeholder}
+        {...formRef}
         required
       />
     </>
