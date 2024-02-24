@@ -23,7 +23,7 @@ const Hero: React.FC<{ posts: (typeof post)[] }> = ({ posts }) => {
           >
             <Tag text={post.tags.toString()} />
 
-            <h2 className="text-5xl max-sm:text-3xl font-extrabold uppercase text-tertiary">
+            <h2 className="text-3xl max-sm:text-xl font-extrabold uppercase text-tertiary">
               {post.title}
             </h2>
             <div className="flex items-center gap-3 font-light text-tertiary justify-center">

@@ -13,9 +13,9 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <div className="w-full py-5 bg-tertiary mt-10">
+    <div className="w-full py-6 px-2 max-sm:py-1  h-autopy-2 bg-tertiary/30 ">
       <div className="w-[95%] mx-auto max-w-[1450px]">
-        <div className="py-5 border-b border-gray-300 border-opacity-20 flex justify-between items-center max-md:flex-col max-md:gap-8">
+        <div className="py-1 border-b border-gray-300 border-opacity-20 flex justify-between items-center max-md:flex-col max-md:gap-8">
           <div className="flex-1">
             <Link href={"/"}>
               <h1 className="text-3xl font-extrabold text-light">
@@ -25,7 +25,7 @@ const Footer = () => {
             </Link>
           </div>
 
-          <ul className="flex item-center justify-center gap-16 flex-1 text-white max-md:flex-col max-md:gap-5">
+          <ul className="flex py-4 px-2 item-center justify-center gap-4 flex-shrink flex-1 text-white max-md:flex-col max-md:gap-2">
             {navLinks.map((link, index) => {
               return (
                 <li key={index}>

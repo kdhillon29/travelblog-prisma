@@ -17,7 +17,7 @@ import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 interface MobileMenuProps {
-  user: User;
+  user: User | null;
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ user }) => {

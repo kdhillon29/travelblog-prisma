@@ -26,6 +26,12 @@ const nextConfig = {
                 port: '',
                 // pathname: '/account123/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'www.fillmurray.com/128/128',
+                port: '',
+                // pathname: '/account123/**',
+            },
         ]
 
     }

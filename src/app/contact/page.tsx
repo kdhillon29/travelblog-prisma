@@ -56,7 +56,11 @@ const page = () => {
             className="p-1 border-gray-300 w-full rounded-md text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-primary outline-none"
           />
           <div className="flex justify-center">
-            <Button aria="submit contact form" text="Submit" />
+            <Button
+              type="submit"
+              aria="submit contact form"
+              text="Contact Us"
+            />
           </div>
         </form>
       </div>

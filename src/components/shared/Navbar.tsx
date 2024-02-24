@@ -9,14 +9,21 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
 interface NavbarProps {
-  user: User;
+  user: any | null;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ user }) => {
+const Navbar: React.FC<NavbarProps> = (props) => {
+  const { data: session, status } = useSession();
+  console.log("session in navbar ", session);
+  let { user: userData } = props;
+  if (!userData && session?.user) {
+    userData = session.user;
+  }
+  console.log("user is", userData);
   const [isScrolling, setIsScrolling] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
@@ -72,7 +79,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
           })}
         </ul>
 
-        {!user && (
+        {!userData && (
           <div className="flex gap-5 flex-1 justify-end max-md:hidden">
             <Button
               text="Log In"
@@ -87,15 +94,15 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
           </div>
         )}
 
-        {user && (
+        {userData && (
           <div className="flex gap-5 items-center flex-1 justify-end max-md:hidden">
-            <h1>{user.name?.split(" ")[0]}</h1>
+            <h1>{userData.name?.split(" ")[0]}</h1>
             <Image
-              src={user.image as string}
+              src={(userData.image as string) || "/assets/avatar.jpg"}
               width={30}
               height={30}
               className="rounded-full border-4 border-primary cursor-pointer"
-              alt={`Image of ${user.name}`}
+              alt={`Image of ${userData.name}`}
               onClick={() => setOpenUserMenu(!openUserMenu)}
             />
           </div>
@@ -123,7 +130,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
         )}
 
         <div>
-          <MobileMenu user={user} />
+          <MobileMenu user={userData} />
         </div>
       </div>
     </nav>
