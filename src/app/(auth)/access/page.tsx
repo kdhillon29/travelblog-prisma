@@ -59,9 +59,9 @@ const Page = () => {
   } = useForm<IFormInput>({ resolver: yupResolver(schema) });
 
   return (
-    <div className=" w-full sm:mx-auto sm:max-w-6xl px-2">
+    <div className=" w-full px-4 md:px-24 mb-1">
       <div className="bg-white shadow sm:rounded-lg flex  justify-start h-auto overflow-hidden">
-        <div className=" w-2/3 flex gap-2 flex-col justify-center items-center mx-auto">
+        <div className=" w-2/3 max-sm:w-full flex gap-2 flex-col justify-center items-center mx-auto">
           <Link href={"/"} className="mb-1">
             <h1 className="text-3xl font-extrabold text-secondary">
               Explore

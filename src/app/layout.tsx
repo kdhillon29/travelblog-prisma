@@ -35,9 +35,9 @@ export default async function RootLayout({
     <html lang="en">
       <AuthContext>
         <EdgeStoreProvider>
-          <body className={`${roboto.className}   bg-light`}>
+          <body className={`${roboto.className} h-screen   bg-light`}>
             <Navbar user={user} />
-            <main className="min-h-[30%] h-1/2  ">{children}</main>
+            <main className=" max-sm:h-full  h-auto  ">{children}</main>
 
             <Footer />
           </body>

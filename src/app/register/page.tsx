@@ -17,6 +17,7 @@ export interface IFormInput {
   userName: string;
   userEmail: string;
   password: string;
+  confirm_password: string;
 }
 
 export default function Page() {
@@ -34,9 +35,8 @@ export default function Page() {
   }, [status, router]);
 
   const onRegisterSubmit = async (data: IFormInput) => {
-    console.log("in form submit");
+    const result = await handleRegisterSubmit(data);
 
-    await handleRegisterSubmit(data);
     reset();
     router.push("/");
   };
@@ -58,6 +58,10 @@ export default function Page() {
       .required("password is a required field")
       .min(5, "password must be min 5 chars")
       .max(10, "password can't be more than 10 chars"),
+    confirm_password: Yup.string()
+      .label("confirm password")
+      .required()
+      .oneOf([Yup.ref("password"), ""], "Passwords must match"),
   });
   const {
     register,
@@ -97,7 +101,15 @@ export default function Page() {
           register={register}
           error={errors.password}
         />
-        <input type="submit" />
+        <FormInput
+          id="Confirm_password"
+          name="confirm_password"
+          type="password"
+          label="Confirm password"
+          register={register}
+          error={errors.confirm_password}
+        />
+        <Button type="submit" text="Register" aria="register user" />
       </form>
     </>
     // <form

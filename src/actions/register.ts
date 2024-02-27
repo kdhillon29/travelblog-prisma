@@ -11,9 +11,24 @@ import { revalidatePath } from "next/cache";
 
 export async function handleRegisterSubmit(data: IFormInput) {
   console.log("in register server actions");
-  const { userName, userEmail, password } = data;
-  const hashedPassword = await hash(password, 12);
+  const { userName, userEmail, password, confirm_password } = data;
+
   try {
+    if (password !== confirm_password) {
+      throw Error("Password and confirm password not matching");
+      return "Error Passwrd not matching";
+    }
+    const exist = await prisma.user.findUnique({
+      where: {
+        email: userEmail,
+      },
+    });
+
+    if (exist) {
+      throw new Error("Email already exists");
+      return { error: "user already exist" };
+    }
+    const hashedPassword = await hash(password, 12);
     const user = await prisma.user.create({
       data: {
         name: userName,
@@ -23,12 +38,14 @@ export async function handleRegisterSubmit(data: IFormInput) {
     });
     if (user) {
       console.log("user signup Succesfully", user);
+      return user;
     } else {
       console.log("error while signup");
     }
-  } catch (error) {
-    console.log("error whill sign up", error);
+  } catch (error: any) {
+    console.log("error whille sign up", error);
+    return { error: "Server Error" };
   } finally {
-    revalidatePath("/home");
+    revalidatePath("/");
   }
 }

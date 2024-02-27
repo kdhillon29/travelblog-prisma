@@ -18,12 +18,12 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = (props) => {
   const { data: session, status } = useSession();
-  console.log("session in navbar ", session);
+  // console.log("session in navbar ", session);
   let { user: userData } = props;
   if (!userData && session?.user) {
     userData = session.user;
   }
-  console.log("user is", userData);
+  // console.log("user is", userData);
   const [isScrolling, setIsScrolling] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
