@@ -6,10 +6,22 @@ import Button from "../ui/Button";
 import { PostTypes } from "@/types/postTypes";
 import Input from "../ui/Input";
 import Loader from "../ui/Loader";
+import { useEdgeStore } from "@/lib/edgestore";
+import prisma from "@/lib/prismadb";
 
 const DeletePosts: React.FC<{ post: PostTypes }> = ({ post }) => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { edgestore } = useEdgeStore();
+  const { id, img } = post;
+
+  async function handleSubmit() {
+    setLoading(true);
+    await edgestore.publicFiles.delete({
+      url: img as string,
+    });
+    closeModal();
+  }
   const handleDelete = () => {
     setShowModal(true);
   };
@@ -40,14 +52,8 @@ const DeletePosts: React.FC<{ post: PostTypes }> = ({ post }) => {
             >
               <p>Are you sure you want to delete this post?</p>
               <div className="flex gap-3 mt-5">
-                <form
-                  action={deletePost}
-                  onSubmit={() => {
-                    setLoading(true);
-                    closeModal;
-                  }}
-                >
-                  <Input type="hidden" name="postId" value={post.id} />
+                <form action={deletePost} onSubmit={handleSubmit}>
+                  <Input type="hidden" name="postId" value={id} />
                   <Button aria="delete post" type="submit" text="Yes" />
                 </form>
                 <Button

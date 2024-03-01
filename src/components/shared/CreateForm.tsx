@@ -10,14 +10,7 @@ import { userTypes } from "@/types/userTypes";
 import { createPost } from "@/actions/blogActions";
 import { z } from "zod";
 
-import {
-  Controller,
-  SubmitHandler,
-  UseFormGetValues,
-  useController,
-  useForm,
-  useFormContext,
-} from "react-hook-form";
+import { Controller, useController, useForm } from "react-hook-form";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -66,7 +59,7 @@ const CreateForm = ({ user }: { user: userTypes }) => {
   // console.log("file is", file);
 
   const schema = Yup.object().shape({
-    image: Yup.string().required().default(imagePath),
+    image: Yup.string().default(imagePath),
     title: Yup.string()
       .min(3, "title must be min 3 chars")
       .required("title is required"),
@@ -92,7 +85,6 @@ const CreateForm = ({ user }: { user: userTypes }) => {
     control,
   });
 
-  // const onSubmit = (data: any) => console.log(data);
   async function handleFormSubmit(data: IFormInput) {
     console.log("form data:", data);
 
@@ -131,9 +123,8 @@ const CreateForm = ({ user }: { user: userTypes }) => {
               value={file}
             />
             <form
-              // action={createPost}
-              className="flex flex-col gap-5 mt-5"
               onSubmit={handleSubmit(handleFormSubmit)}
+              className="flex flex-col gap-5 mt-5"
             >
               <input
                 id="image"
@@ -159,7 +150,7 @@ const CreateForm = ({ user }: { user: userTypes }) => {
                 rules={{
                   required: true,
                   minLength: 10,
-                  maxLength: 200,
+                  // maxLength: 200,
                 }}
                 defaultValue="Write here.."
                 render={({ field: { onChange, value } }) => (
@@ -174,6 +165,7 @@ const CreateForm = ({ user }: { user: userTypes }) => {
                 placeholder="Write Here..."
                 className="text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-primary sm:text-sm sm:leading-6 border w-full border-gray-200 p-2 rounded-md py-1.5"
               ></textarea> */}
+
               {errors.description && (
                 <span className="text-red-600">
                   {" "}
@@ -185,7 +177,7 @@ const CreateForm = ({ user }: { user: userTypes }) => {
                 {...register("category")}
                 className="text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-primary sm:text-sm sm:leading-6 border w-full border-gray-200 p-2 rounded-md py-1.5"
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   Choose Tag
                 </option>
                 <option value="Adventure">Adventure</option>
@@ -210,7 +202,7 @@ const CreateForm = ({ user }: { user: userTypes }) => {
               <span className=" w-full  flex justify-center gap-6">
                 <Button
                   type="submit"
-                  text={loading ? "Creating Post..." : "Create"}
+                  text={loading ? "Creating Post..." : "Create Post"}
                   aria="create blog"
                 />
                 {loading && <Loader />}

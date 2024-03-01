@@ -5,7 +5,6 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import bcrypt from "bcrypt";
 
 import prisma from "@/lib/prismadb";
-import { revalidatePath } from "next/cache";
 
 // import { PrismaClient } from "@prisma/client";
 
@@ -69,7 +68,6 @@ export const authOptions: AuthOptions = {
       return baseUrl;
     },
     async signIn({ user, account, profile, email, credentials }) {
-      revalidatePath("/userposts");
       if (user) {
         return true;
       }
@@ -84,7 +82,7 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }: { session: any; token: any }) {
       // console.log("token is", token);
-      revalidatePath("/userposts");
+
       session.address = token.sub;
       session.user.id = token.sub;
 

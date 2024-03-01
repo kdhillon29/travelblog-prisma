@@ -27,8 +27,6 @@ export async function createPost(data: any) {
       userEmail: userEmail,
     },
   });
-
-  revalidatePath("/create");
   return post;
 }
 
