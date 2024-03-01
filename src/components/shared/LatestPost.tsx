@@ -5,14 +5,9 @@ import BlogCard from "./BlogCard";
 import Button from "../ui/Button";
 import { PostTypes } from "@/types/postTypes";
 
-import { blogData } from "@/constants/blogData";
-
-const PostType = blogData[0];
-
-const LatestPost: React.FC<{ posts: (typeof PostType)[] }> = ({ posts }) => {
+const LatestPost: React.FC<{ posts: PostTypes[] }> = ({ posts }) => {
   const latestPost = posts.sort(
-    (a, b) =>
-      new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
   const [visibleBlogs, setVisibleBlogs] = useState(5);
@@ -26,18 +21,18 @@ const LatestPost: React.FC<{ posts: (typeof PostType)[] }> = ({ posts }) => {
       <div className="w-full text-center">
         <h2
           id="latest-post"
-          className="text-center text-2xl font-extrabold uppercase text-tertiary inline-block px-2 mb-10"
+          className="text-center text-2xl font-extrabold uppercase text-tertiary inline-block px-2 my-6 border-b-orange-400 border-b-4"
         >
           Latest Post
         </h2>
       </div>
 
-      <div className="flex flex-col gap-10 h-full ">
+      <div className="flex flex-col gap-10 h-full">
         {latestPost.slice(0, visibleBlogs).map((post, id) => (
           <BlogCard post={post} key={id} />
         ))}
         {visibleBlogs < latestPost.length && (
-          <div className="flex justify-center">
+          <div className="flex justify-center my-4">
             <Button
               onClick={showMoreBlogs}
               text="Show more"

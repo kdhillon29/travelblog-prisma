@@ -6,7 +6,7 @@ export const HtmlEditor = ({ onChange, value, field }: any) => {
   return (
     <>
       <Editor
-        apiKey={"8pivn24aci4kdbwa1oawilg0zfzvdl695359uq0i3gfowm7y"}
+        apiKey={process.env.NEXT_PUBLIC_TINYMCE_API}
         {...field}
         value={value}
         onEditorChange={handleEditorChange}

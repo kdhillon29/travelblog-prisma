@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import bcrypt from "bcrypt";
 
 import prisma from "@/lib/prismadb";
+import { revalidatePath } from "next/cache";
 
 // import { PrismaClient } from "@prisma/client";
 
@@ -61,11 +62,14 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) return url;
-      else if (url.startsWith("/")) return new URL(url, baseUrl).toString();
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
     async signIn({ user, account, profile, email, credentials }) {
+      revalidatePath("/userposts");
       if (user) {
         return true;
       }
@@ -80,6 +84,7 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }: { session: any; token: any }) {
       // console.log("token is", token);
+      revalidatePath("/userposts");
       session.address = token.sub;
       session.user.id = token.sub;
 

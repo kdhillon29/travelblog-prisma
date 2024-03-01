@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Button from "@/components/ui/Button";
+import { revalidatePath } from "next/cache";
 const Page = () => {
   const session = useSession();
   const router = useRouter();
@@ -31,6 +32,7 @@ const Page = () => {
 
     signIn(action, { ...data, redirect: false })
       .then((callback) => {
+        // revalidatePath("/userposts");
         if (callback?.error) {
           return;
         }
@@ -39,7 +41,11 @@ const Page = () => {
           router.push("/");
         }
       })
-      .finally(() => setIsLoading(false));
+
+      .finally(() => {
+        // revalidatePath("/userposts");
+        setIsLoading(false);
+      });
   };
   interface IFormInput {
     email: string;

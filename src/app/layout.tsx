@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 //   name: "kanwar",
 //   email: "kan@gmail.com",
 // };
+export const revalidate = 0;
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +38,7 @@ export default async function RootLayout({
         <EdgeStoreProvider>
           <body className={`${roboto.className} h-screen   bg-light`}>
             <Navbar user={user} />
-            <main className=" max-sm:h-full  h-auto  ">{children}</main>
+            <main className="  h-auto  ">{children}</main>
 
             <Footer />
           </body>

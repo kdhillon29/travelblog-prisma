@@ -34,7 +34,7 @@ export interface IFormInput {
   description: string;
   category: string;
   email: string;
-  onChange?: any;
+  // onChange?: any;
 }
 const CreateForm = ({ user }: { user: userTypes }) => {
   const [file, setFile] = useState<File>();
@@ -62,11 +62,11 @@ const CreateForm = ({ user }: { user: userTypes }) => {
     })();
   }, [file]);
 
-  console.log("img path is", imagePath);
-  console.log("file is", file);
+  // console.log("img path is", imagePath);
+  // console.log("file is", file);
 
   const schema = Yup.object().shape({
-    image: Yup.string().default(imagePath),
+    image: Yup.string().required().default(imagePath),
     title: Yup.string()
       .min(3, "title must be min 3 chars")
       .required("title is required"),
@@ -87,9 +87,12 @@ const CreateForm = ({ user }: { user: userTypes }) => {
   } = useForm<IFormInput>({ resolver: yupResolver(schema) });
   const {
     field: { onChange, value, ...field },
-  } = useController({ name: "description", control });
+  } = useController({
+    name: "description",
+    control,
+  });
 
-  const onSubmit = (data: any) => console.log(data);
+  // const onSubmit = (data: any) => console.log(data);
   async function handleFormSubmit(data: IFormInput) {
     console.log("form data:", data);
 
@@ -134,11 +137,8 @@ const CreateForm = ({ user }: { user: userTypes }) => {
             >
               <input
                 id="image"
-                // label="Image"
                 {...register("image")}
-                // error={errors.image}
                 type="hidden"
-                // name="image"
                 value={imagePath}
               />
               <FormInput
@@ -156,6 +156,11 @@ const CreateForm = ({ user }: { user: userTypes }) => {
               <Controller
                 name="description"
                 control={control}
+                rules={{
+                  required: true,
+                  minLength: 10,
+                  maxLength: 200,
+                }}
                 defaultValue="Write here.."
                 render={({ field: { onChange, value } }) => (
                   <HtmlEditor field={field} onChange={onChange} value={value} />

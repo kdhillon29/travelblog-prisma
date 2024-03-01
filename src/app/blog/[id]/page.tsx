@@ -7,58 +7,42 @@ import {
 } from "react-icons/ai";
 import { PostTypes } from "@/types/postTypes";
 import { formatDate } from "@/utils/formatDate";
-import { blogData } from "@/constants/blogData";
 
-const postType = blogData[0];
+const getData = async (id: string) => {
+  const res = await fetch(`http://localhost:3000/api/post/${id}`, {
+    cache: "no-store",
+  });
 
-// const getData = async (id: string) => {
-//   const res = await fetch(`http://localhost:3000/api/post/${id}`, {
-//     cache: "no-store",
-//   });
+  if (!res.ok) {
+    throw new Error("Failed");
+  }
 
-//   if (!res.ok) {
-//     throw new Error("Failed");
-//   }
+  return res.json();
+};
 
-//   return res.json();
-// };
-
-const page = async ({ searchParams }: { searchParams: typeof postType }) => {
-  const post = searchParams;
-  //   console.log(searchParams);
-  //   const post = await getData(id);
+const page = async ({ params }: { params: PostTypes }) => {
+  const { id } = params;
+  const post = await getData(id);
   return (
-    <div className="w-[95%] mx-auto max-w-[1450px]">
-      <div className="w-full h-[400px] max-sm:h-64 relative mb-2">
+    <div className="w-[90%] mx-auto h-auto max-w-[1450px]">
+      <div className="w-full px-12 h-[400px] max-sm:h-[200px] relative mb-5">
         <Image
           fill
           alt="image for blog"
-          src={post.image_path}
-          className="object-cover"
+          src={post.img}
+          className="object-cover backg"
         />
       </div>
 
-      <Tag text={post.tags.toString()} />
-      <h2 className="text-4xl font-extrabold uppercase text-tertiary my-3">
+      <Tag text={post.category} />
+      <h2 className="text-3xl font-extrabold uppercase text-tertiary my-3">
         {post.title}
       </h2>
-      <div className="mt-5 flex gap-5 items-center">
-        <Image
-          src={post.authorImage}
-          width={500}
-          height={500}
-          alt={`Image of ${post.authorName}`}
-          className="rounded-full w-20 h-20 object-cover"
-        />
-        <div className="flex gap-1 flex-col">
-          <span>{post.authorName}</span>
-          <span>{formatDate(post.publishDate)}</span>
-        </div>
-      </div>
-      <div className="flex md:gap-10 gap-5 relative mt-2 md:flex-row flex-col">
+
+      <div className="flex md:gap-20 gap-5 relative mt-10 md:flex-row flex-col">
         <aside
           className="md:sticky
-        md:top-3/4 md:h-1/4 px-4
+        md:bottom-0 md:h-1/2
         "
         >
           <span className="uppercase text-2xl font-extrabold text-tertiary">
@@ -71,10 +55,27 @@ const page = async ({ searchParams }: { searchParams: typeof postType }) => {
           </div>
         </aside>
 
-        <article>
-          <p className="text-lg text-gray-600 text-justify w-full px-12">
-            {post.paragraph}
-          </p>
+        <article className="flex flex-col gap-8">
+          <div className=" flex gap-6 items-center">
+            <Image
+              src={post.user.image || "/assets/avatar.jpg"}
+              width={50}
+              height={50}
+              alt={`Image of ${post.authorName}`}
+              className="rounded-full object-cover"
+            />
+            <div className="flex gap-1 flex-col text-gray-500">
+              <span> Author:{post.user.name}</span>
+              <span>published on:{formatDate(post.createdAt)}</span>
+            </div>
+          </div>
+          <div
+            className="text-xl  px-2 py-6 text-justidy w-full text-gray-700"
+            dangerouslySetInnerHTML={{ __html: post.desc }}
+          >
+            {/* {post.desc} */}
+            {/* <div dangerouslySetInnerHTML={{ __html: post.desc }}></div> */}
+          </div>
         </article>
       </div>
     </div>

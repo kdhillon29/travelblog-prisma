@@ -2,7 +2,7 @@
 
 "use server";
 
-import { IFormInput } from "@/app/register/page";
+import { IFormInput } from "@/app/(auth)/access/register/page";
 import prisma from "@/lib/prismadb";
 
 import { hash } from "bcrypt";

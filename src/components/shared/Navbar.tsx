@@ -11,6 +11,7 @@ import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { revalidatePath } from "next/cache";
 
 interface NavbarProps {
   user: any | null;
@@ -88,7 +89,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
             />
             <Button
               text="Sign Up"
-              onClick={() => router.push("/access")}
+              onClick={() => router.push("/access/register")}
               aria="Sign up button"
             />
           </div>
@@ -120,10 +121,16 @@ const Navbar: React.FC<NavbarProps> = (props) => {
               <li className="">Create a post</li>
             </Link>
             <Link href="/userposts" onClick={() => setOpenUserMenu(false)}>
-              <li>My Post</li>
+              <li>My Posts</li>
             </Link>
 
-            <li className="cursor-pointer" onClick={() => signOut()}>
+            <li
+              className="cursor-pointer"
+              onClick={() => {
+                signOut();
+                // revalidatePath("/userposts");
+              }}
+            >
               Sign out
             </li>
           </ul>

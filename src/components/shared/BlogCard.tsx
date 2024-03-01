@@ -4,19 +4,17 @@ import Tag from "../ui/Tag";
 import Overlay from "../ui/Overlay";
 import Link from "next/link";
 import { PostTypes } from "@/types/postTypes";
-import { blogData } from "@/constants/blogData";
 
-const PostType = blogData[0];
-const BlogCard: React.FC<{ post: typeof PostType }> = ({ post }) => {
+const BlogCard: React.FC<{ post: PostTypes }> = ({ post }) => {
   return (
     <article className="relative rounded-lg overflow-hidden">
-      <div className="w-[1000px] h-[350px] max-sm:h-64 relative">
-        {post.image_path && (
+      <div className="w-[100%] h-[350px] relative">
+        {post.img && (
           <Image
-            src={post.image_path}
+            src={post.img}
             fill
             alt={`image for ${post.title}`}
-            className="object-cover "
+            className="object-cover"
           />
         )}
         <Overlay />
@@ -24,7 +22,7 @@ const BlogCard: React.FC<{ post: typeof PostType }> = ({ post }) => {
 
       <div className="absolute w-full h-full top-0 p-5 flex flex-col justify-between">
         <div>
-          <Tag text={post.tags.toString()} />
+          <Tag text={post.category} />
 
           <h3 className="text-3xl font-extrabold uppercase text-white">
             {post.title}
@@ -33,7 +31,7 @@ const BlogCard: React.FC<{ post: typeof PostType }> = ({ post }) => {
       </div>
 
       <Link
-        href={{ pathname: `/blog/${post.id}`, query: { ...post } }}
+        href={`/blog/${post.id}`}
         className="absolute bottom-0 right-0 bg-tertiary p-5 text-white rounded-tl-lg z-6 cursor-pointer"
       >
         <AiOutlineArrowRight size={30} />
